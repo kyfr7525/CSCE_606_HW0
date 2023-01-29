@@ -7,6 +7,8 @@ public class Simulator {
     ArrayList<MovieGoer> moviegoers;
     Admin admin;
     boolean flag = false;
+    String username;
+    Announcer ann;
 
     public void constructMovieInventory(){
         movies = new ArrayList<Movie>();
@@ -28,24 +30,42 @@ public class Simulator {
         // user input https://www.w3schools.com/java/java_user_input.asp and https://www.tutorialspoint.com/java/util/scanner_close.htm
         Scanner newUser = new Scanner(System.in);  // Create a Scanner object
 
-        System.out.println("Enter name in all lowercase, please");
+        ann.makeAnnouncement("Enter name in all lowercase, please");
 
-        String username = newUser.nextLine();  // Read user input
-        System.out.println("Username is: " + username.toLowerCase());  // Output user input
+        username = newUser.nextLine();  // Read user input
+        ann.makeAnnouncement("Username is: " + username.toLowerCase());  // Output user input
+
+            ////////////////////////////////////////////////////////////////////////////////
+
+            // check if a string/username is only spaces https://howtodoinjava.com/java11/check-blank-string/#:~:text=isBlank()%20method%20to%20determine,isEmpty()%20method.
+        while (username.isBlank())
+        {
+            ann.makeAnnouncement("Your name can't be only spaces!");
+            ann.makeAnnouncement("Enter name in all lowercase, please");
+
+            username = newUser.nextLine();  // Read user input
+            ann.makeAnnouncement("Username is: " + username.toLowerCase());  // Output user input
+        }
+            ////////////////////////////////////////////////////////////////////////////////
+
         newUser.close();
+
+
 
         for (MovieGoer mg:moviegoers){
             if (mg.name == username.toLowerCase()){
-                System.out.println("user has been found");
+                ann.makeAnnouncement("user has been found");
                 flag = true;
             }
         }
 
         if (flag == false) {// user was not found
-            System.out.println("Welcome new user: " + username.toLowerCase());
+            ann.makeAnnouncement("Welcome new user: " + username.toLowerCase());
             moviegoers.add(new MovieGoer(username));
         }
         
+        flag = false; // set the flag to false after finding user and after if conditional to not trigger conditional case
+
         
 
 
